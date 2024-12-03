@@ -1,5 +1,6 @@
 ---@diagnostic disable: undefined-global
 local DF = LibStub('AceAddon-3.0'):GetAddon('DragonflightUI')
+local LSM = LibStub('LibSharedMedia-3.0')
 local mName = 'Unitframe'
 local Module = DF:NewModule(mName, 'AceConsole-3.0', 'AceHook-3.0')
 

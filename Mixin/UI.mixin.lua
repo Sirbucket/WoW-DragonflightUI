@@ -1354,9 +1354,14 @@ function DragonflightUIMixin:ChangeInspectFrame()
     do
         -- <Anchor point="BOTTOMLEFT" x="130" y="16"/>
         local main = _G['InspectMainHandSlot']
-        main:ClearAllPoints()
-        local x = (InspectPaperDollItemsFrame:GetWidth() / 2) - 1.5 * main:GetWidth() - 5
-        main:SetPoint('BOTTOMLEFT', InspectPaperDollItemsFrame, 'BOTTOMLEFT', x, 16)
+        if DF.API.Version.IsTBC then
+            -- @TODO
+            --  main:SetPoint('BOTTOMLEFT', InspectPaperDollItemsFrame, 'BOTTOMLEFT', x, 16)
+        else
+            main:ClearAllPoints()
+            local x = (InspectPaperDollItemsFrame:GetWidth() / 2) - 1.5 * main:GetWidth() - 5
+            main:SetPoint('BOTTOMLEFT', InspectPaperDollItemsFrame, 'BOTTOMLEFT', x, 16)
+        end
     end
 
     UIPanelWindows["InspectFrame"] = {
@@ -3321,6 +3326,8 @@ function DragonflightUIMixin:ChangeTalentsEra()
 
     frame:SetSize(646, 468)
 
+    if DF.API.Version.IsTBC then frame:SetHeight(468 + 90) end
+
     DragonflightUIMixin:AddNineSliceTextures(frame, true)
     DragonflightUIMixin:ButtonFrameTemplateNoPortrait(frame)
     DragonflightUIMixin:FrameBackgroundSolid(frame, true)
@@ -4009,6 +4016,27 @@ function DragonflightUIMixin:SpellbookEraProfessions()
             frame:Update()
         end)
     end
+end
+
+function DragonflightUIMixin:ChangeTBCPVPFrame()
+    local frame = _G['PVPFrame']
+
+    local regions = {frame:GetRegions()}
+
+    for k, child in ipairs(regions) do
+        --     
+        if child:GetObjectType() == 'Texture' then
+            local layer, layerNr = child:GetDrawLayer()
+            -- print(layer, layerNr, child:GetTexture())
+            -- if layer == 'ARTWORK' then child:Hide() end
+            child:Hide()
+        end
+    end
+
+    local frameBG = _G['PVPFrameBackground']
+    frameBG:Show()
+    frameBG:SetPoint('TOPLEFT', frame, 'TOPLEFT', 14 - 14, -36 + 14)
+    frameBG:SetSize(512 - 5, 512)
 end
 
 function DragonflightUIMixin:ChangeWrathPVPFrame()

@@ -384,7 +384,7 @@ function Module:ApplySettingsInternal(sub, key)
         if not DF.API.Version.IsTBC then Module:UpdateTradeskills() end
     end)
 
-    if DF.Era or (DF.Wrath and not DF.Cata) then
+    if DF.Era or DF.API.Version.IsTBC or (DF.Wrath and not DF.Cata) then
         self:ConditionalOption('changeSpellBook', 'first', 'Change SpellBook', function()
             DragonflightUIMixin:ChangeSpellbookEra()
         end)
@@ -417,6 +417,7 @@ function Module:ApplySettingsInternal(sub, key)
             end)
         elseif DF.API.Version.IsTBC then
             DragonflightUIMixin:ChangeCharacterFrameEra()
+            DragonflightUIMixin:ChangeTBCPVPFrame()
         end
     end)
 
@@ -435,7 +436,7 @@ function Module:ApplySettingsInternal(sub, key)
         end)
     end)
 
-    if (DF.Era or (DF.Wrath and not DF.Cata and false)) then
+    if (DF.Era or DF.API.Version.IsTBC or (DF.Wrath and not DF.Cata and false)) then
         self:ConditionalOption('changeTalents', 'first', 'Change Talentframe', function()
             Module:FuncOrWaitframe('Blizzard_TalentUI', function()
                 DragonflightUIMixin:ChangeTalentsEra()
